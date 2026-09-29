@@ -113,7 +113,12 @@ if [ "$FROM_SOURCE" -eq 1 ]; then
 else
     APT_PKGS="ca-certificates"; DNF_PKGS="ca-certificates"; YUM_PKGS="ca-certificates"; ZYP_PKGS="ca-certificates"
 fi
-if command -v apt-get >/dev/null 2>&1; then
+if [ "$FROM_SOURCE" -eq 0 ] && [ -z "$EXTRA" ]; then
+    # Download mode with curl already present: nothing to install. This
+    # also keeps end-of-life distros (CentOS 7, whose mirrors are gone)
+    # working, since the package manager is never touched.
+    :
+elif command -v apt-get >/dev/null 2>&1; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get update -y
     apt-get install -y --no-install-recommends $APT_PKGS $EXTRA
