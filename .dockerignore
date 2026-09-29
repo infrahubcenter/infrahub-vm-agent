@@ -1,0 +1,7 @@
+*.exe
+*.exe~
+.env*
+*.log
+.git
+vm-agent
+install.sh
